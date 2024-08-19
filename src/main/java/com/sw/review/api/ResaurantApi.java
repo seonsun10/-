@@ -1,10 +1,15 @@
 package com.sw.review.api;
 
 import com.sw.review.api.request.CreateAndEditRestaurantRequest;
+import com.sw.review.api.response.RestaurantDetailView;
+import com.sw.review.api.response.RestaurantView;
 import com.sw.review.model.RestaurantEntity;
 import com.sw.review.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,8 +22,8 @@ public class ResaurantApi {
      * @return
      */
     @GetMapping("/restaurants")
-    public String getRestaurants() {
-        return "This is getRestaurants";
+    public List<RestaurantView> getRestaurants() {
+        return restaurantService.getAllRestaurants();
     }
 
     /**
@@ -27,8 +32,8 @@ public class ResaurantApi {
      * @return
      */
     @GetMapping("/restaurants/{restaurantId}")
-    public String getRestaurant(@PathVariable Long restaurantId) {
-        return "This is getRestaurant - id : " + restaurantId;
+    public RestaurantDetailView getRestaurant(@PathVariable Long restaurantId) {
+        return restaurantService.getRestaurantDetail(restaurantId);
     }
 
 
