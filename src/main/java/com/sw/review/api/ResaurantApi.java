@@ -1,12 +1,16 @@
 package com.sw.review.api;
 
 import com.sw.review.api.request.CreateAndEditRestaurantRequest;
+import com.sw.review.model.RestaurantEntity;
+import com.sw.review.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 public class ResaurantApi {
 
-
+    private final RestaurantService restaurantService;
 
     /**
      * 레스토랑 기본 조회
@@ -34,8 +38,8 @@ public class ResaurantApi {
      * @return
      */
     @PostMapping("/restaurant")
-    public String createRestaurant(@RequestBody CreateAndEditRestaurantRequest request) {
-        return "This is createRestaurant, name = " + request.getName() + ", address = " + request.getAddress() + ", 1번메뉴 : = " + request.getMenus().get(0).getName();
+    public void createRestaurant(@RequestBody CreateAndEditRestaurantRequest request) {
+        restaurantService.createRestaurant(request);
     }
 
     /**
@@ -44,8 +48,8 @@ public class ResaurantApi {
      * @return
      */
     @PutMapping("/restaurant/{restaurantId}")
-    public String editRestaurant(@PathVariable Long restaurantId,@RequestBody CreateAndEditRestaurantRequest request) {
-        return "This is createRestaurant, name = " + request.getName() + ", address = " + request.getAddress() + ", 2번메뉴 : = " + request.getMenus().get(0).getName();
+    public void editRestaurant(@PathVariable Long restaurantId,@RequestBody CreateAndEditRestaurantRequest request) {
+        restaurantService.editRestaurant(restaurantId, request);
     }
 
     /**
@@ -54,8 +58,8 @@ public class ResaurantApi {
      * @return
      */
     @DeleteMapping("/restaurant/{restaurantId}")
-    public String deleteRestaurant(@PathVariable Long restaurantId) {
-        return "This is deleteRestaurant - id : " + restaurantId;
+    public void deleteRestaurant(@PathVariable Long restaurantId) {
+        restaurantService.deleteRestaurant(restaurantId);
     }
 
 }
