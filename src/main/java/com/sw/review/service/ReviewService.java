@@ -3,7 +3,10 @@ package com.sw.review.service;
 import com.sw.review.model.ReviewEntity;
 import com.sw.review.repository.RestaurantRepository;
 import com.sw.review.repository.ReviewRepository;
+import com.sw.review.service.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,4 +41,19 @@ public class ReviewService {
 
         reviewRepository.delete(review);
     }
+
+    public ReviewDto getRestaurantReview(Long restaurantId, Pageable page) {
+        Double avgScore = reviewRepository.getAvgScoreByRestaurantId(restaurantId);
+        Slice<ReviewEntity> reviews = reviewRepository.findSliceByRestaurantId(restaurantId, page);
+
+        return ReviewDto.builder()
+                .avgScore(avgScore)
+                .reviews(reviews.getContent())
+                .page(ReviewDto.ReviewDtoPage.builder()
+                        .offset(page.getPageNumber() * page.getPageSize())
+                        .limit(page.getPageSize())
+                        .build())
+                .build();
+    }
+
 }
